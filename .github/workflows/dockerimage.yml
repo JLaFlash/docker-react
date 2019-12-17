@@ -1,0 +1,18 @@
+name: Docker Image CI
+
+on: [push]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag laflash/docker-reat
+    - name: login to dockerhub
+      run: echo "$DOCKER_PASS" | docker login -u "$DOCKER_ID" --password-stdin
+    - name: Push Docker imag  
+    - run: docker push laflash/docker-reat 
