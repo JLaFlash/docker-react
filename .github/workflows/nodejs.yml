@@ -1,10 +1,10 @@
-name: Node CI
+name: docker-react2
 
 on: [push]
 
 jobs:
   build:
-
+    name: compile and unit tests
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,3 +24,19 @@ jobs:
         npm test
       env:
         CI: true
+
+  deploy:
+    name: create and deploy dorkerFile
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+      - name: Publish to Registry
+        uses: HurricanKai/Publish-Docker-Github-Action@master
+        with:
+          name: laflash/$GITHUB_WORKFLOW
+          username: ${{ secrets.DOCKER_ID }}
+          password: ${{ secrets.DOCKER_PASS }}
+
